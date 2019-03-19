@@ -27,13 +27,17 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     mainwindow.cpp \
-    slidepuzzlegame.cpp \
-    my_qlabel.cpp
+    puzzleboard.cpp \
+    my_board_label.cpp \
+    puzzleelements.cpp
 
 HEADERS += \
     mainwindow.h \
-    slidepuzzlegame.h \
-    my_qlabel.h
+    puzzleboard.h \
+    moveaction.h \
+    my_board_label.h \
+    puzzleelements.h \
+    viewtype.h
 
 FORMS += \
     mainwindow.ui
@@ -42,3 +46,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resource.qrc

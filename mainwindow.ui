@@ -36,7 +36,7 @@
     <normaloff>../SlidePuzzle/Logo.png</normaloff>../SlidePuzzle/Logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="my_qlabel" name="lbl_Mouse_Area">
+   <widget class="my_board_label" name="lbl_Mouse_Area">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -70,7 +70,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -199,6 +199,9 @@
    <property name="text">
     <string>New</string>
    </property>
+   <property name="toolTip">
+    <string>Starts a new game</string>
+   </property>
   </action>
   <action name="actionSave">
    <property name="text">
@@ -224,9 +227,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>my_qlabel</class>
+   <class>my_board_label</class>
    <extends>QLabel</extends>
-   <header location="global">my_qlabel.h</header>
+   <header location="global">my_board_label.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "my_qlabel.h"
+#include "my_board_label.h"
+#include <QMessageBox>
 #include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -11,8 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->lbl_Mouse_Area, SIGNAL(Mouse_Pos()), this, SLOT(Mouse_current_pos()));
     connect(ui->lbl_Mouse_Area, SIGNAL(Mouse_Pressed()), this, SLOT(Mouse_pressed()));
     connect(ui->lbl_Mouse_Area, SIGNAL(Mouse_Left()), this, SLOT(Mouse_left()));
-    QPixmap pix("C:/Users/krzys/SlidePuzzle/default_board_5x5.jpg");
+    connect(ui->lbl_Mouse_Area, SIGNAL(Board_Changed()), this, SLOT(Board_changed()));
+    QPixmap pix(":/img/default_board_5x5.jpg");
     ui->lbl_Mouse_Area->setPixmap(pix.scaled(ui->lbl_Mouse_Area->width(), ui->lbl_Mouse_Area->height(), Qt::KeepAspectRatio));
+
 }
 
 MainWindow::~MainWindow(){
@@ -30,4 +33,20 @@ void MainWindow::Mouse_pressed(){
 
 void MainWindow::Mouse_left(){
     ui->lbl_mouse_event_name->setText("Mouse left!");
+}
+
+void MainWindow::Board_changed(){
+    ui->lbl_Mouse_Area->repaint();
+}
+
+void MainWindow::on_actionNew_triggered(){
+    //QMessageBox::information(this, "New game", "New game will be started.");
+    this->board = new PuzzleBoard(3, 3);
+    this->board->shuffle();
+    ui->lbl_Mouse_Area->initializeBoard(this->board);
+    ui->lbl_Mouse_Area->printBoard();
+}
+
+void MainWindow::on_actionExit_triggered(){
+    this->close();
 }
