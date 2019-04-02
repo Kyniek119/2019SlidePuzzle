@@ -4,7 +4,7 @@ my_board_label::my_board_label(QWidget *parent): QLabel(parent){
 }
 
 my_board_label::~my_board_label(){
-    defaultImages.clear();
+    defaultImagePieces.clear();
 }
 
 void my_board_label::mouseMoveEvent(QMouseEvent *ev){
@@ -26,10 +26,10 @@ void my_board_label::mousePressEvent(QMouseEvent *ev){
     if(clickedPos != lastClickedPos){
         qDebug() << QString("ClickedPosition: %1 \n").arg(clickedPos);
         board->moveIfPossible(clickedPos);
-        board->printOnConsole();
+        //board->printOnConsole();
+        incrementMoveCount();
         printBoard();
         lastClickedPos = clickedPos;
-
         emit Mouse_Pressed();
     }
 }
@@ -39,13 +39,12 @@ void my_board_label::leaveEvent(QEvent *){
 }
 
 void my_board_label::printBoard(){
-    int x, y, n, m, blankPos;
+    int x, y, n, m;
     int* tiles;
 
     n = board->getN();
     m = board->getM();
 
-    blankPos = board->getBlankPos();
     tiles = board->getTiles();
 
     QPixmap *image = new QPixmap(QSize(n*tileWidth,m*tileHeight));
@@ -58,16 +57,8 @@ void my_board_label::printBoard(){
     for ( int i = 0; i < n*m; i++){
         x = (i * tileWidth) % (n * tileWidth) ;
         y = (i * tileWidth) / (n * tileWidth) * tileHeight;
-        //qDebug() << QString("TileWidth: %1, TileHeight: %2, on \"i\" element: %3, x: %4, y: %5").arg(tileWidth).arg(tileHeight).arg(i).arg(x).arg(y);
-
-        painter->drawImage(QRect(x,y,tileWidth,tileHeight), defaultImages[tiles[i]-1]);
-        //painter->drawLine(x,y,x+tileWidth,y);
-        //painter->drawLine(x,y,x,y+tileHeight);
-
+        painter->drawImage(QRect(x,y,tileWidth,tileHeight), defaultImagePieces[tiles[i]-1]);
     }
-
-    //painter->drawLine(0,m*tileHeight,n*tileWidth,m*tileHeight);
-    //painter->drawLine(n*tileWidth,0,n*tileWidth,m*tileHeight);
     painter->end();
     this->setPixmap(*image);
     delete painter;
@@ -81,13 +72,15 @@ void my_board_label::initializeBoard(PuzzleBoard *board){
 
     this->tileWidth = this->width() / n;
     this->tileHeight = this->height() / m;
+    resetMoveCount();
 
     this->board = board;
-    defaultImages.clear();
-    defaultImages.resize(tileWidth*tileHeight);
+
+    defaultImagePieces.clear();
+    defaultImagePieces.resize(tileWidth*tileHeight);
 
     for(int i = 0; i < n*m; i++){
-        //qDebug() << "initializeBoard() " << i;
+        qDebug() << "initializeBoard() " << i;
         QImage *image = new QImage(QSize(tileWidth,tileHeight),QImage::Format_RGB32);
         QPainter painter(image);
         painter.setBrush(QBrush(Qt::green));
@@ -101,15 +94,25 @@ void my_board_label::initializeBoard(PuzzleBoard *board){
         painter.setFont(font);
         painter.setPen(QPen(Qt::white));
         QString labelText = QString("%1").arg(i+1);
-        drawText(painter,tileWidth/2, tileHeight/2, Qt::AlignHCenter | Qt::AlignVCenter, labelText );
-        defaultImages[i] = *image;
+        drawText(painter, tileWidth/2, tileHeight/2, Qt::AlignHCenter | Qt::AlignVCenter, labelText);
+        defaultImagePieces[i] = *image;
     }
+}
 
+int my_board_label::getMoveCount(){
+    return moveCount;
+}
+
+void my_board_label::resetMoveCount(){
+    moveCount = 0;
+}
+
+void my_board_label::incrementMoveCount(){
+    moveCount++;
 }
 
 void my_board_label::drawText(QPainter & painter, qreal x, qreal y, Qt::Alignment flags,
-              const QString & text, QRectF * boundingRect)
-{
+              const QString & text, QRectF * boundingRect){
    const qreal size = 32767.0;
    QPointF corner(x, y - size);
    if (flags & Qt::AlignHCenter) corner.rx() -= size/2.0;
@@ -122,7 +125,6 @@ void my_board_label::drawText(QPainter & painter, qreal x, qreal y, Qt::Alignmen
 }
 
 void my_board_label::drawText(QPainter & painter, const QPointF & point, Qt::Alignment flags,
-              const QString & text, QRectF * boundingRect)
-{
+              const QString & text, QRectF * boundingRect){
    drawText(painter, point.x(), point.y(), flags, text, boundingRect);
 }

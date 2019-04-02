@@ -29,18 +29,19 @@ SOURCES += \
     mainwindow.cpp \
     puzzleboard.cpp \
     my_board_label.cpp \
-    puzzleelements.cpp
+    my_settings_dialog.cpp
 
 HEADERS += \
     mainwindow.h \
     puzzleboard.h \
     moveaction.h \
     my_board_label.h \
-    puzzleelements.h \
-    viewtype.h
+    viewtype.h \
+    my_settings_dialog.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    my_settings_dialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

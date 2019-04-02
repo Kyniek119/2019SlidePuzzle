@@ -22,6 +22,7 @@ public:
 
     void printBoard();
     void initializeBoard(PuzzleBoard *board);
+    int getMoveCount();
 
     int x,y;
 
@@ -37,14 +38,15 @@ private:
     int tileWidth;
     int tileHeight;
     int lastClickedPos = 0;
-    QVector<QImage> defaultImages;
+    int moveCount = 0;
+    QVector<QImage> defaultImagePieces;
 
+    void resetMoveCount();
+    void incrementMoveCount();
     void drawText(QPainter & painter, const QPointF & point, Qt::Alignment flags,
                        const QString & text, QRectF * boundingRect = {});
     void drawText(QPainter & painter, qreal x, qreal y, Qt::Alignment flags,
                   const QString & text, QRectF * boundingRect = 0);
-    void printBlankElement(int x, int y, int number);
-    void printRegularElement(int x, int y, int number);
 
 public slots:
 

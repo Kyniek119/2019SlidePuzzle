@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <QDebug>
 #include <QString>
+#include <time.h>
 
 PuzzleBoard::PuzzleBoard(int n, int m){
     this->n = n;
@@ -13,6 +14,7 @@ PuzzleBoard::PuzzleBoard(int n, int m){
     for(int i = 0; i < n*m; i++){
         tiles[i] = i+1;
     }
+    srand (time(NULL));
 }
 
 void PuzzleBoard::moveIfPossible(int clickedTile){
@@ -133,5 +135,5 @@ bool PuzzleBoard::isSolvable(){
         }
     }
 
-    return count % 2 == 1;
+    return count % 2 == n*m % 2;
 }

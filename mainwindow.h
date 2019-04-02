@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <puzzleboard.h>
+#include "my_settings_dialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +29,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     PuzzleBoard *board;
+    my_settings_dialog *my_settings_dialog;
 };
 
 #endif // MAINWINDOW_H

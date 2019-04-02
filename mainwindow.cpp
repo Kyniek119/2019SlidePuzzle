@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->lbl_Mouse_Area, SIGNAL(Board_Changed()), this, SLOT(Board_changed()));
     QPixmap pix(":/img/default_board_5x5.jpg");
     ui->lbl_Mouse_Area->setPixmap(pix.scaled(ui->lbl_Mouse_Area->width(), ui->lbl_Mouse_Area->height(), Qt::KeepAspectRatio));
+    ui->rb_NumberView->setChecked(true);
 
 }
 
@@ -36,12 +37,16 @@ void MainWindow::Mouse_left(){
 }
 
 void MainWindow::Board_changed(){
+    ui->lbl_moves_count->setNum(ui->lbl_Mouse_Area->getMoveCount());
     ui->lbl_Mouse_Area->repaint();
 }
 
 void MainWindow::on_actionNew_triggered(){
     //QMessageBox::information(this, "New game", "New game will be started.");
-    this->board = new PuzzleBoard(3, 3);
+    my_settings_dialog = new class my_settings_dialog(this);
+    my_settings_dialog->setModal(true);
+    my_settings_dialog->exec();
+    this->board = new PuzzleBoard(my_settings_dialog->getRows(),my_settings_dialog->getColumns());
     this->board->shuffle();
     ui->lbl_Mouse_Area->initializeBoard(this->board);
     ui->lbl_Mouse_Area->printBoard();

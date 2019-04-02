@@ -2,7 +2,6 @@
 #define PUZZLEBOARD_H
 
 #include <moveaction.h>
-#include <puzzleelements.h>
 
 class PuzzleBoard
 {
